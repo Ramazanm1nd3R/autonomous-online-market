@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
+from rest_framework import viewsets
+from common.permissions import IsAdminUser
 
 @api_view(['GET'])
 def api_overview(request):
@@ -85,3 +87,7 @@ def delete_category(request, pk):
     category.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]  # Только администраторы могут изменять продукты
