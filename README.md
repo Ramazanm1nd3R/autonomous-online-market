@@ -60,4 +60,3 @@ This document outlines all the API endpoints available in the Online Market appl
 - All endpoints require HTTP headers to include `"Content-Type: application/json"`.
 - For POST, PUT, and PATCH methods, ensure that the request body is a valid JSON object.
 
-For more information on request and response formats, please refer to the API documentation or contact the API administrator.
