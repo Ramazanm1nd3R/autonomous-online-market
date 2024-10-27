@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 from rest_framework import viewsets
-from common.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser
 
 @api_view(['GET'])
 def api_overview(request):
@@ -30,6 +30,7 @@ def view_product_detail(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def add_product(request):
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid():
@@ -38,6 +39,7 @@ def add_product(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def update_product(request, pk):
     product = Product.objects.get(pk=pk)
     serializer = ProductSerializer(instance=product, data=request.data)
@@ -47,6 +49,7 @@ def update_product(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
+@permission_classes([IsAdminUser])
 def delete_product(request, pk):
     product = Product.objects.get(pk=pk)
     product.delete()
@@ -65,6 +68,7 @@ def category_detail(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAdminUser])
 def create_category(request):
     serializer = CategorySerializer(data=request.data)
     if serializer.is_valid():
@@ -73,6 +77,7 @@ def create_category(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'PATCH'])
+@permission_classes([IsAdminUser])
 def update_category(request, pk):
     category = Category.objects.get(pk=pk)
     serializer = CategorySerializer(category, data=request.data)
@@ -82,6 +87,7 @@ def update_category(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
+@permission_classes([IsAdminUser])
 def delete_category(request, pk):
     category = Category.objects.get(pk=pk)
     category.delete()

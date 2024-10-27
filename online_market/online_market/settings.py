@@ -28,8 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework_simplejwt',
+
     'user',  
-    
     'common',
     'accounts',
     'backend_api',
@@ -133,4 +134,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  # По умолчанию доступ только для авторизованных пользователей
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Время действия access-токена
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Время действия refresh-токена
 }
