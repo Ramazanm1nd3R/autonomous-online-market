@@ -32,7 +32,6 @@ INSTALLED_APPS = [
 
     'user',  
     'common',
-    'accounts',
     'backend_api',
     'carts',
     'orders',
