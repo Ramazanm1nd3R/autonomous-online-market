@@ -8,10 +8,10 @@ urlpatterns = [
     path('categories/update/<int:pk>/', update_category, name='update_category'),
     path('categories/delete/<int:pk>/', delete_category, name='delete_category'),
 
-    path('product/', view_products, name='view_products'),
-    path('product/<int:pk>/', view_product_detail, name='view_product_detail'),
-    path('product/create/', add_product, name='add_product'),
-    path('product/update/<int:pk>/', update_product, name='update_product'),
-    path('product/delete/<int:pk>/', delete_product, name='delete_product'),
+    path('', view_products, name='view_products'),
+    path('<int:pk>/', view_product_detail, name='view_product_detail'),
+    path('create/', add_product, name='add_product'),
+    path('update/<int:pk>/', update_product, name='update_product'),
+    path('delete/<int:pk>/', delete_product, name='delete_product'),
     path('', api_overview, name='api_overview'),
 ]
