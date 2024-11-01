@@ -16,7 +16,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=(permissions.IsAdminUser,),
 )
 
 urlpatterns = [
@@ -24,11 +24,13 @@ urlpatterns = [
     
     path('api/v1/products/', include('products.urls')),
     path('api/v1/carts/', include('carts.urls')),
+
     # DRF Session Authentication (drf-auth)
     path('api/v1/drf-auth/', include('rest_framework.urls')),
 
     # path('api/v1/product/', include('carts.urls')),
     path('user/', include('user.urls')),
+    
     # JWT Authentication Endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
