@@ -36,10 +36,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
-    
+
     'user',  
     'common',
-    'backend_api',
     'carts',
     'orders',
     'parser',
