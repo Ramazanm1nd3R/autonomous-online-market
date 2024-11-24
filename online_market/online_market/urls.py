@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/v1/drf-auth/', include('rest_framework.urls')),
 
     # path('api/v1/product/', include('carts.urls')),
-    path('user/', include('user.urls')),
+    path('user/', include(('user.urls', 'users'), namespace='users')),
     
     # JWT Authentication Endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
