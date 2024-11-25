@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: online_market_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 914970
+    networks:
+      - online_market_network
+    ports:
+      - "5433:5433"
+
+  web:
+    build:
+      context: .
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5433
+      POSTGRES_DB: online_market_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 914970
+    depends_on:
+      - db
+    networks:
+      - online_market_network
+    ports:
+      - "8000:8000"
+
+networks:
+  online_market_network:
