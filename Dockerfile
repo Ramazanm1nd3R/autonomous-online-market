@@ -1,7 +1,7 @@
 # Используем официальный образ Python
 FROM python:3.12-slim
 
-# Устанавливаем рабочую директорию в контейнере
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
 # Устанавливаем зависимости для сборки (например, gcc, psycopg2)
@@ -12,18 +12,21 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Скопировать файлы requirements в контейнер
+# Скопировать requirements.txt в контейнер
 COPY requirements.txt /app/
 
 # Установить зависимости Python
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Скопировать весь проект в рабочую директорию контейнера
-COPY . /app/
+# Скопировать проект Django (всю папку online_market) в рабочую директорию контейнера
+COPY online_market /app/online_market
 
-# Открыть порт 8000
+# Указываем рабочую директорию как директорию Django проекта
+WORKDIR /app/online_market
+
+# Открыть порт 8000 для внешнего доступа
 EXPOSE 8000
 
-# Команда для запуска сервера разработки Django
+# Команда для запуска Django-сервера
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
