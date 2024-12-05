@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: online_market_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 914970
+      POSTGRES_PASSWORD: 12345
     networks:
       - online_market_network
     ports:
@@ -20,7 +20,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_DB: online_market_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 914970
+      POSTGRES_PASSWORD: 12345
     depends_on:
       - db
     networks:
