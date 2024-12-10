@@ -4,7 +4,7 @@ class IsAdminUser(permissions.BasePermission):
     """
     Allows access only to admin users.
     """
-    def has_permission(self, request, view):
+    def has_permission(self, request):
         return request.user and request.user.is_staff
 
 class IsAuthenticatedUser(permissions.BasePermission):
