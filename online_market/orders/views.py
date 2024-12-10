@@ -4,31 +4,10 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from rest_framework import viewsets
-from common.permissions import IsAuthenticatedUser
-
-class OrderViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedUser]
+from products.models import Product  # Импортируем вашу модель Product
+from rest_framework import status
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
-# Описание параметров для Swagger
-currency_param = openapi.Parameter(
-    'currency', openapi.IN_BODY, description="Currency for payment (e.g., 'usd')",
-    type=openapi.TYPE_STRING, required=True
-)
-name_param = openapi.Parameter(
-    'name', openapi.IN_BODY, description="Name of the product",
-    type=openapi.TYPE_STRING, required=True
-)
-amount_param = openapi.Parameter(
-    'amount', openapi.IN_BODY, description="Amount in cents (e.g., 5000 = $50.00)",
-    type=openapi.TYPE_INTEGER, required=True
-)
-quantity_param = openapi.Parameter(
-    'quantity', openapi.IN_BODY, description="Quantity of the product",
-    type=openapi.TYPE_INTEGER, required=True
-)
 
 class CreateCheckoutSessionView(APIView):
     @swagger_auto_schema(
@@ -36,12 +15,10 @@ class CreateCheckoutSessionView(APIView):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'currency': openapi.Schema(type=openapi.TYPE_STRING, description="Currency for payment (e.g., 'usd')"),
-                'name': openapi.Schema(type=openapi.TYPE_STRING, description="Name of the product"),
-                'amount': openapi.Schema(type=openapi.TYPE_INTEGER, description="Amount in cents"),
+                'product_id': openapi.Schema(type=openapi.TYPE_INTEGER, description="ID of the product"),
                 'quantity': openapi.Schema(type=openapi.TYPE_INTEGER, description="Quantity of the product"),
             },
-            required=['currency', 'name', 'amount', 'quantity']
+            required=['product_id', 'quantity']
         ),
         responses={
             200: openapi.Response(
@@ -63,18 +40,29 @@ class CreateCheckoutSessionView(APIView):
         YOUR_DOMAIN = "http://127.0.0.1:8000"
         try:
             data = request.data
+            product_id = data.get('product_id')
+            quantity = data.get('quantity', 1)
+
+            # Проверяем существование и активность продукта
+            try:
+                product = Product.objects.get(pk=product_id, is_active=True)
+            except Product.DoesNotExist:
+                return JsonResponse({'error': 'Product not found or is not active'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Создаем сессию Stripe Checkout
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[
                     {
                         'price_data': {
-                            'currency': data['currency'],
+                            'currency': 'usd',
                             'product_data': {
-                                'name': data['name'],
+                                'name': product.name,
+                                'description': product.description if product.description else "No description",
                             },
-                            'unit_amount': data['amount'],  # Ожидается в центах
+                            'unit_amount': int(product.price * 100),  # Цена в центах
                         },
-                        'quantity': data['quantity'],
+                        'quantity': quantity,
                     },
                 ],
                 mode='payment',
