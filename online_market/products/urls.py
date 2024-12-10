@@ -1,17 +1,18 @@
 from django.urls import path
-from .views import *
+from .views import (
+    ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView,
+    CategoryListView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView
+)
 
 urlpatterns = [
-    path('categories/', list_categories, name='list_categories'),
-    path('categories/<int:pk>/', category_detail, name='category_detail'),
-    path('categories/create/', create_category, name='create_category'),
-    path('categories/update/<int:pk>/', update_category, name='update_category'),
-    path('categories/delete/<int:pk>/', delete_category, name='delete_category'),
+    path('products/', ProductListView.as_view(), name='product_list'),
+    path('products/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('products/create/', ProductCreateView.as_view(), name='product_create'),
+    path('products/update/<int:pk>/', ProductUpdateView.as_view(), name='product_update'),
+    path('products/delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
 
-    path('', view_products, name='view_products'),
-    path('<int:pk>/', view_product_detail, name='view_product_detail'),
-    path('create/', add_product, name='add_product'),
-    path('update/<int:pk>/', update_product, name='update_product'),
-    path('delete/<int:pk>/', delete_product, name='delete_product'),
-    path('', api_overview, name='api_overview'),
+    path('categories/', CategoryListView.as_view(), name='category_list'),
+    path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
+    path('categories/update/<int:pk>/', CategoryUpdateView.as_view(), name='category_update'),
+    path('categories/delete/<int:pk>/', CategoryDeleteView.as_view(), name='category_delete'),
 ]

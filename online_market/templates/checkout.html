@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Stripe Checkout</h1>
+    <p>Нажмите кнопку ниже, чтобы оплатить:</p>
+    <button id="checkout-button">Купить</button>
+
+    <script>
+        // Ваш публичный ключ Stripe
+        const stripe = Stripe("{{ YOUR_PUBLISHABLE_KEY }}");
+
+        // Найти кнопку в HTML
+        const button = document.getElementById("checkout-button");
+
+        // Обработчик нажатия кнопки
+        button.addEventListener("click", () => {
+            fetch("/create-checkout-session/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    product_id: 1, // ID продукта
+                    quantity: 2    // Количество
+                })
+            })
+            .then(response => response.json())
+            .then(session => {
+                // Перенаправить на Stripe Checkout
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(result => {
+                // Обработка ошибок
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
