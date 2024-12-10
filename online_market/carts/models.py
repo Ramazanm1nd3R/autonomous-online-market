@@ -7,7 +7,8 @@ class Cart(models.Model):
     items = models.ManyToManyField(Product, through='CartItem')
 
     def __str__(self):
-        return f"Cart of {self.user.email}"  # Отображение email пользователя в админ-панели
+        return f"Cart of {self.user.email}" 
+        
 
     def get_total(self):
         # Use prefetch_related to optimize queries
