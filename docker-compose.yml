@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   db:
@@ -10,7 +10,7 @@ services:
     networks:
       - online_market_network
     ports:
-      - "5433:5432"
+      - "8000:5500"
 
   web:
     build:
