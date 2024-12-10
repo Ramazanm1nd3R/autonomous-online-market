@@ -20,7 +20,9 @@ class Cart(models.Model):
         if not created:
             cart_item.quantity += quantity
         cart_item.save()
-
+        
+ def remove_item(self, product):
+        CartItem.objects.filter(cart=self, product=product).delete()
    
 
 class CartItem(models.Model):
