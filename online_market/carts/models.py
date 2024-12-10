@@ -21,8 +21,7 @@ class Cart(models.Model):
             cart_item.quantity += quantity
         cart_item.save()
 
-    def remove_item(self, product):
-        CartItem.objects.filter(cart=self, product=product).delete()
+   
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, db_index=True)
