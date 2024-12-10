@@ -21,7 +21,7 @@ class Cart(models.Model):
             cart_item.quantity += quantity
         cart_item.save()
         
- def remove_item(self, product):
+    def remove_item(self, product):
         CartItem.objects.filter(cart=self, product=product).delete()
    
 
