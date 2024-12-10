@@ -10,11 +10,11 @@ services:
     networks:
       - online_market_network
     ports:
-      - "8000:5500"
+      - "5433:5432"
 
   web:
     build:
-      context: .
+      context: " "
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
