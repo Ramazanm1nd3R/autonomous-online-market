@@ -14,13 +14,13 @@ services:
 
   web:
     build:
-      context: " "
+      context: .
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_DB: online_market_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: 54321
     depends_on:
       - db
     networks:
