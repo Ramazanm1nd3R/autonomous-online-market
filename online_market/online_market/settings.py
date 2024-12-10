@@ -1,6 +1,6 @@
+import os
 from pathlib import Path
 from datetime import timedelta
-import os
 from dotenv import load_dotenv
 
 # Загрузка .env файла
@@ -206,3 +206,7 @@ LOGGING = {
         },
     },
 }
+
+# Stripe API Keys (Test Mode)
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
