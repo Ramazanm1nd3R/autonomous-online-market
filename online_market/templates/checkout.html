@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Stripe Checkout</title>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
@@ -15,11 +15,12 @@
         // Ваш публичный ключ Stripe
         const stripe = Stripe("{{ YOUR_PUBLISHABLE_KEY }}");
 
-        // Найти кнопку в HTML
+        // Найти кнопку "Купить" в HTML
         const button = document.getElementById("checkout-button");
 
-        // Обработчик нажатия кнопки
+        // Добавить обработчик нажатия
         button.addEventListener("click", () => {
+            // Отправляем запрос на сервер для создания платежной сессии
             fetch("/create-checkout-session/", {
                 method: "POST",
                 headers: {
@@ -27,22 +28,28 @@
                 },
                 body: JSON.stringify({
                     product_id: 1, // ID продукта
-                    quantity: 2    // Количество
+                    quantity: 1    // Количество
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Ошибка при создании сессии оплаты");
+                }
+                return response.json();
+            })
             .then(session => {
-                // Перенаправить на Stripe Checkout
+                // Перенаправляем пользователя на страницу Stripe Checkout
                 return stripe.redirectToCheckout({ sessionId: session.id });
             })
             .then(result => {
-                // Обработка ошибок
                 if (result.error) {
+                    // Обрабатываем ошибки
                     alert(result.error.message);
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
+                console.error("Ошибка:", error);
+                alert("Что-то пошло не так. Попробуйте позже.");
             });
         });
     </script>

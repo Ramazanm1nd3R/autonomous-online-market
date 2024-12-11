@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
 
+    'django_celery_beat',
+    
     'user',  
     'common',
     'carts',
@@ -164,6 +166,11 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Время действия access-токена
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Время действия refresh-токена
 }
+
+# celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 
 # Email send settings
